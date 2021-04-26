@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            color: white;
+            background-color: rgb(25, 25, 25);
+            text-align: center;
+        }
+
+        table {
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <table>
+        {% for x in all %}
+        <tr>
+            <td>{{x.id_klienta}}</td>
+            <td>{{x.imie}}</td>
+            <td>{{x.kod}}</td>
+            <td>{{x.miejscowosc}}</td>
+            <td>{{x.nazwisko}}</td>
+            <td>{{x.nip}}</td>
+            <td>{{x.nr_domu}}</td>
+            <td>{{x.prefix_nip}}</td>
+            <td>{{x.ulica}}</td>
+            <td>{{x.wojewodztwo}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>

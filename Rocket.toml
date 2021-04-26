@@ -1,0 +1,6 @@
+[development]
+port = 3000
+template_dir = "templates/"
+
+[global.databases]
+msql = { url = "mysql://root@localhost/maturainf" }

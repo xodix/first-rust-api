@@ -1,0 +1,13 @@
+{
+  "name": "firs_rust",
+  "version": "1.0.0",
+  "description": "My first try at rust",
+  "main": "index.js",
+  "scripts": {
+    "run": "cargo run",
+    "build": "cargo build --release",
+    "dev": "npx onchange -i src/**/* -- npm run run"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,279 @@
+openapi: 3.0.0
+info:
+  version: "0.1"
+  title: coal storage
+servers:
+  - url: "http://localhost:3000"
+paths:
+  /:
+    get:
+      summary: "Gets templated /dane_osobowe table"
+      operationId: templateUsers
+      tags:
+        - dane_osobowe
+      responses:
+        "200":
+          description: "table html document"
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/Asortyment"
+              example: "<html><head></head><body>table here</body></html>"
+        default:
+          description: unexpected err
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /sss:
+    get:
+      summary: "echos the sent color"
+      operationId: echoColor
+      tags:
+        - misc
+      responses:
+        "200":
+          description: "color object"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  r:
+                    type: integer
+                    format: int32
+                    maximum: 255
+                    minimum: 0
+                  g:
+                    type: integer
+                    format: int32
+                    maximum: 255
+                    minimum: 0
+                  b:
+                    type: integer
+                    format: int32
+                    maximum: 255
+                    minimum: 0
+              example: "{r: 255, g: 255, b: 0}"
+        "400":
+          description: "wrong request body"
+        "420":
+          description: "wrong request values"
+        default:
+          description: unexpected err
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /asortyment:
+    get:
+      summary: "Gets asortyment"
+      operationId: getAsortyment
+      tags:
+        - asortyment
+      responses:
+        "200":
+          description: "asortyment"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Asortyment"
+        default:
+          description: unexpected err
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /dane_osobowe:
+    get:
+      summary: "Gets dane_osobowe"
+      operationId: getDaneOsobowe
+      tags:
+        - dane_osobowe
+      responses:
+        "200":
+          description: "dane_osobowe"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DaneOsobowe"
+        default:
+          description: unexpected err
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /dane_osobowe/length:
+    get:
+      summary: "Gets length of dane_osobowe rows"
+      operationId: getDaneOsoboweLen
+      tags:
+        - dane_osobowe
+      responses:
+        "200":
+          description: "dane_osobowe length"
+          content:
+            text/plain:
+              schema:
+                example: 1001
+        default:
+          description: unexpected err
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /transakcje:
+    get:
+      summary: "Gets transakcje"
+      operationId: getTransakcje
+      tags:
+        - transakcje
+      responses:
+        "200":
+          description: "Transakcje table"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transakcje"
+        default:
+          description: unexpected err
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /us:
+    get:
+      summary: "Gets us"
+      operationId: getUs
+      tags:
+        - us
+      responses:
+        "200":
+          description: "us table"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transakcje"
+        default:
+          description: unexpected err
+          content:
+            text/html:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Asortyment:
+      type: array
+      items:
+        type: object
+        required:
+          - id_asortymentu
+          - nazwa_asortymentu
+          - cena_jednostkowa
+        properties:
+          id_asortymentu:
+            type: string
+            pattern: "^[A-Z]+$"
+            maxLength: 3
+          nazwa_asortymentu:
+            type: string
+            maxLength: 50
+          cena_jednostkowa:
+            type: number
+            format: float
+            minimum: 0
+    DaneOsobowe:
+      type: array
+      items:
+        type: object
+        required:
+          - id_klienta
+          - imie
+          - nazwisko
+          - prefix_nip
+          - nip
+          - wojewodztwo
+          - kod
+          - miejscowosc
+          - ulica
+          - nr_domu
+        properties:
+          id_klienta:
+            type: string
+            maxLength: 9
+          imie:
+            type: string
+            maxLength: 30
+          nazwisko:
+            type: string
+            maxLength: 40
+          prefix_nip:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 999
+          nip:
+            type: string
+            pattern: '^\d{3}-\d{3}-\d{2}-\d{2}$'
+          wojewodztwo:
+            type: string
+            maxLength: 20
+          kod:
+            type: string
+            pattern: '^\d{2}-\d{3}$'
+          miejscowosc:
+            type: string
+            maxLength: 30
+          ulica:
+            type: string
+            maxLength: 30
+          nr-domu:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 2147483647
+    Transakcje:
+      type: array
+      items:
+        type: object
+        required:
+          - id_transakcji
+          - id_klienta
+          - id_asortymentu
+          - ilosc
+          - data_transakcji
+        properties:
+          id_transakcji:
+            type: string
+            pattern: '^F\/TR\/\d{1,8}$'
+          id_klienta:
+            type: string
+            maxLength: 9
+          id_asortymentu:
+            type: string
+            pattern: "^[A-Z]+$"
+            maxLength: 3
+          ilosc:
+            type: number
+            format: float
+          data_transakcji:
+            type: string
+            format: date
+    Us:
+      type: array
+      items:
+        type: object
+        required:
+          - id_us
+          - nazwa_us
+        properties:
+          id_us:
+            type: integer
+            pattern: int32
+            minimum: 0
+            maximum: 999
+          nazwa_us:
+            type: string
+            maxLength: 100
+    Error:
+      type: string
